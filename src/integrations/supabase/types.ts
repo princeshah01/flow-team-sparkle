@@ -9,7 +9,362 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      chatroom_members: {
+        Row: {
+          chatroom_id: string
+          id: string
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          chatroom_id: string
+          id?: string
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          chatroom_id?: string
+          id?: string
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chatroom_members_chatroom_id_fkey"
+            columns: ["chatroom_id"]
+            isOneToOne: false
+            referencedRelation: "chatrooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chatroom_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chatrooms: {
+        Row: {
+          created_at: string
+          created_by: string
+          group_id: string | null
+          id: string
+          is_direct: boolean | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          group_id?: string | null
+          id?: string
+          is_direct?: boolean | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          group_id?: string | null
+          id?: string
+          is_direct?: boolean | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chatrooms_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chatrooms_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_members: {
+        Row: {
+          group_id: string
+          id: string
+          joined_at: string
+          role: Database["public"]["Enums"]["user_role"] | null
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          joined_at?: string
+          role?: Database["public"]["Enums"]["user_role"] | null
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          joined_at?: string
+          role?: Database["public"]["Enums"]["user_role"] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      groups: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "groups_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          chatroom_id: string
+          content: string
+          created_at: string
+          file_name: string | null
+          file_url: string | null
+          id: string
+          sender_id: string
+          task_id: string | null
+        }
+        Insert: {
+          chatroom_id: string
+          content: string
+          created_at?: string
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          sender_id: string
+          task_id?: string | null
+        }
+        Update: {
+          chatroom_id?: string
+          content?: string
+          created_at?: string
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          sender_id?: string
+          task_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_chatroom_id_fkey"
+            columns: ["chatroom_id"]
+            isOneToOne: false
+            referencedRelation: "chatrooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pinned_tasks: {
+        Row: {
+          chatroom_id: string
+          created_at: string
+          id: string
+          pinned_by: string
+          task_id: string
+        }
+        Insert: {
+          chatroom_id: string
+          created_at?: string
+          id?: string
+          pinned_by: string
+          task_id: string
+        }
+        Update: {
+          chatroom_id?: string
+          created_at?: string
+          id?: string
+          pinned_by?: string
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pinned_tasks_chatroom_id_fkey"
+            columns: ["chatroom_id"]
+            isOneToOne: false
+            referencedRelation: "chatrooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pinned_tasks_pinned_by_fkey"
+            columns: ["pinned_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pinned_tasks_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          points: number | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          points?: number | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          points?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          due_date: string | null
+          group_id: string | null
+          id: string
+          priority: Database["public"]["Enums"]["task_priority"] | null
+          repeat_type: Database["public"]["Enums"]["task_repeat"] | null
+          status: Database["public"]["Enums"]["task_status"] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          due_date?: string | null
+          group_id?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["task_priority"] | null
+          repeat_type?: Database["public"]["Enums"]["task_repeat"] | null
+          status?: Database["public"]["Enums"]["task_status"] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          due_date?: string | null
+          group_id?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["task_priority"] | null
+          repeat_type?: Database["public"]["Enums"]["task_repeat"] | null
+          status?: Database["public"]["Enums"]["task_status"] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +373,10 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      task_priority: "normal" | "high"
+      task_repeat: "none" | "daily" | "weekly" | "monthly"
+      task_status: "pending" | "completed"
+      user_role: "admin" | "member"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +491,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      task_priority: ["normal", "high"],
+      task_repeat: ["none", "daily", "weekly", "monthly"],
+      task_status: ["pending", "completed"],
+      user_role: ["admin", "member"],
+    },
   },
 } as const
